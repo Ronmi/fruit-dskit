@@ -2,6 +2,13 @@
 
 namespace Fruit\DSKit;
 
+/**
+ * Mapping data represents a bijective function.
+ *
+ * Bijection guarantees the stored data are mapped one-to-one
+ * and onto. In other words, every key maps to a distinct value,
+ * and vice versa.
+ */
 class Bijection implements Collection
 {
     private $kv;
@@ -14,6 +21,7 @@ class Bijection implements Collection
         $this->vk = array();
     }
 
+    /// set mapping relation, no-op if not one-to-one and onto
     public function set($k, $v)
     {
         if (array_key_exists($v, $this->vk)) {
@@ -28,6 +36,7 @@ class Bijection implements Collection
         $this->vk[$v] = $k;
     }
 
+    /// remove a mapping relation by key, no-op if not exist
     public function remove($k)
     {
         if (!array_key_exists($k, $this->kv)) {
@@ -39,26 +48,35 @@ class Bijection implements Collection
         unset($this->vk[$v]);
     }
 
+    /// get value by key
     public function get($k)
     {
-        return $this->kv[$k];
+        if (array_key_exists($k, $this->kv)) {
+            return $this->kv[$k];
+        }
     }
 
+    /// detect if key exists
     public function has($k)
     {
         return array_key_exists($k, $this->kv);
     }
 
+    /// get key by value
     public function getv($v)
     {
-        return $this->vk[$v];
+        if (array_key_exists($v, $this->vk)) {
+            return $this->vk[$v];
+        }
     }
 
+    /// detect if value exists
     public function hasv($v)
     {
         return array_key_exists($v, $this->vk);
     }
 
+    /// remove a mapping relation by value, no-op if not exist
     public function removev($v)
     {
         if (!array_key_exists($v, $this->vk)) {
